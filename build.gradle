@@ -1,0 +1,43 @@
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src'
+        }
+    }
+    test {
+        java {
+            srcDir 'test'
+        }
+    }
+}
+
+test {
+    testLogging {
+        events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+    }
+}
+
+jar {
+    doFirst {
+
+        // Keep jar clean:
+        exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.MF'
+
+        manifest {
+            if (!configurations.runtime.isEmpty()) {
+                attributes('Class-Path':
+                                configurations.runtime.collect{it.toURI().toString()}.join(' '))
+            }
+        }
+    }
+}
