@@ -5,8 +5,12 @@ import java.util.Comparator;
  */
 public class Point implements Comparable<Point> {
 
-    public Point(int x, int y) {
+    private final int x;
+    private final int y;
 
+    public Point(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
     public void draw() {
@@ -16,27 +20,62 @@ public class Point implements Comparable<Point> {
     }
 
     public String toString() {
-        return "";
+        return "(" + x + ", " + y + ")";
     }
 
     @Override
     public int compareTo(Point that) {
-        return 0;
+        if (that == null) {
+            throw new IllegalArgumentException("Cannot compare to null");
+        }
+
+        if (this.y == that.y && this.x == that.x) {
+            return 0;
+        } else if (this.y < that.y || (this.y == that.y && this.x < that.x)) {
+            return -1;
+        } else {
+            return 1;
+        }
     }
 
     public double slopeTo(Point that) {
-        return 0.0;
+        if (that == null) {
+            throw new IllegalArgumentException("Cannot make slope with null");
+        }
+
+        if (this.compareTo(that) == 0) {
+            return Double.NEGATIVE_INFINITY;
+        } else if (this.x == that.x) {
+            return Double.POSITIVE_INFINITY;
+        } else if (this.y == that.y) {
+            return +0.0;
+        } else {
+            return (double) (that.y - this.y)/(that.x - this.x);
+        }
     }
 
     public Comparator<Point> slopeOrder() {
         return new PointComparator();
     }
 
-    private static class PointComparator implements Comparator<Point> {
+    private class PointComparator implements Comparator<Point> {
 
         @Override
-        public int compare(Point a, Point b) {
-            return 0;
+        public int compare(Point p1, Point p2) {
+            if (p1 == null || p2 == null) {
+                throw new IllegalArgumentException("Cannot compare nulls");
+            }
+
+            double slope1 = slopeTo(p1);
+            double slope2 = slopeTo(p2);
+
+            if (slope1 > slope2) {
+                return 1;
+            } else if (slope1 < slope2) {
+                return -1;
+            } else {
+                return 0;
+            }
         }
     }
 
