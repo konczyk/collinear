@@ -1,5 +1,4 @@
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.closeTo;
 import static org.junit.Assert.assertThat;
 
 import junitparams.JUnitParamsRunner;
@@ -18,7 +17,7 @@ public class PointTest {
         assertThat(p.toString(), is("(1, 2)"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void throwsExceptionWhenComparingToNull() {
         new Point(1, 1).compareTo(null);
     }
@@ -45,7 +44,7 @@ public class PointTest {
         };
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void throwsExceptionWhenCreatingSlopeWithNull() {
         new Point(1, 1).slopeTo(null);
     }
@@ -71,7 +70,7 @@ public class PointTest {
         };
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     @Parameters(method = "slopeOrderNullParams")
     public void throwsExceptionWhenSlopeOrderingWithNulls(Point p1, Point p2) {
         new Point(1, 1).slopeOrder().compare(p1, p2);

@@ -26,7 +26,7 @@ public class Point implements Comparable<Point> {
     @Override
     public int compareTo(Point that) {
         if (that == null) {
-            throw new IllegalArgumentException("Cannot compare to null");
+            throw new NullPointerException("argument null");
         }
 
         if (this.y == that.y && this.x == that.x) {
@@ -40,7 +40,7 @@ public class Point implements Comparable<Point> {
 
     public double slopeTo(Point that) {
         if (that == null) {
-            throw new IllegalArgumentException("Cannot make slope with null");
+            throw new NullPointerException("argument is null");
         }
 
         if (this.compareTo(that) == 0) {
@@ -63,7 +63,7 @@ public class Point implements Comparable<Point> {
         @Override
         public int compare(Point p1, Point p2) {
             if (p1 == null || p2 == null) {
-                throw new IllegalArgumentException("Cannot compare nulls");
+                throw new NullPointerException("argument is null");
             }
 
             double slope1 = slopeTo(p1);
