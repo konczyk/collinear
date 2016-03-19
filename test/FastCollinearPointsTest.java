@@ -65,4 +65,20 @@ public class FastCollinearPointsTest {
         assertThat(fcp.numberOfSegments(), is(equalTo(2)));
     }
 
+    @Test
+    public void segmentsWithMoreThanFourPoints() {
+        // (3,1) -> (3,3) -> (3,4) -> (3,6) -> (3, 8) -> (3, 9)
+        // (1,3) -> (3,3) -> (6,3) -> (8,3) -> (9,3)
+        Point[] points = new Point[]{
+            new Point(8, 3), new Point(1, 3), new Point(3, 1), new Point(3, 3),
+            new Point(9, 3), new Point(4, 4), new Point(3, 9), new Point(3, 8),
+            new Point(3, 4), new Point(3, 6), new Point(6, 3), new Point(1, 1)};
+        FastCollinearPoints fcp = new FastCollinearPoints(points);
+
+        LineSegment l1 = new LineSegment(new Point(3, 1), new Point(3, 9));
+        LineSegment l2 = new LineSegment(new Point(1, 3), new Point(9, 3));
+        assertThat(fcp.segments(), is(arrayContaining(l1, l2)));
+        assertThat(fcp.numberOfSegments(), is(equalTo(2)));
+    }
+
 }

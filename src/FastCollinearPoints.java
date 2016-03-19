@@ -49,9 +49,10 @@ public class FastCollinearPoints {
     }
 
     private void findLineSegments(Point[] points) {
-        for (int i = 0; i < points.length; i++) {
 
-            Comparator<Point> slopeOrder = points[i].slopeOrder();
+        for (Point point: points) {
+
+            Comparator<Point> slopeOrder = point.slopeOrder();
             Arrays.sort(points, slopeOrder);
 
             int j = 2;
