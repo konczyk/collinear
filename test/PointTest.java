@@ -77,8 +77,8 @@ public class PointTest {
     }
     private Object[] slopeOrderNullParams() {
         return new Object[]{
-            new Point[]{new Point(0,0), null},
-            new Point[]{null, new Point(0,0)},
+            new Point[]{new Point(0, 0), null},
+            new Point[]{null, new Point(0, 0)},
             new Point[]{null, null}
         };
     }

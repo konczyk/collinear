@@ -30,9 +30,12 @@ public class Point implements Comparable<Point> {
             throw new NullPointerException("argument null");
         }
 
-        if (this.y == that.y && this.x == that.x) {
+        int xCompare = Double.compare(this.x, that.x);
+        int yCompare = Double.compare(this.y, that.y);
+
+        if (xCompare == 0 && yCompare == 0) {
             return 0;
-        } else if (this.y < that.y || (this.y == that.y && this.x < that.x)) {
+        } else if (yCompare == -1 || (yCompare == 0 && xCompare == -1)) {
             return -1;
         } else {
             return 1;
@@ -67,12 +70,10 @@ public class Point implements Comparable<Point> {
                 throw new NullPointerException("argument is null");
             }
 
-            double slope1 = slopeTo(p1);
-            double slope2 = slopeTo(p2);
-
-            if (slope1 > slope2) {
+            int slopeCompare = Double.compare(slopeTo(p1), slopeTo(p2));
+            if (slopeCompare == 1) {
                 return 1;
-            } else if (slope1 < slope2) {
+            } else if (slopeCompare == -1) {
                 return -1;
             } else {
                 return 0;

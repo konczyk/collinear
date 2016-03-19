@@ -17,8 +17,8 @@ public class LineSegmentTest {
     }
     private Object[] lineSegmentNullParams() {
         return new Object[]{
-            new Point[]{new Point(1,1), null},
-            new Point[]{null, new Point(1,1)},
+            new Point[]{new Point(1, 1), null},
+            new Point[]{null, new Point(1, 1)},
             new Point[]{null, null}
         };
     }

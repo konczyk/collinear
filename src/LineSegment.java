@@ -17,7 +17,6 @@ public class LineSegment {
     }
 
     public void draw() {
-
     }
 
     public String toString() {
