@@ -11,7 +11,8 @@ that connects a subset of 4 or more of the points.
 - Fixed public API for `Point`, `BruteCollinearPoints` and `FastCollinearPoints`
 - Running time of `BruteCollinearPoints` should be n<sup>4</sup> in the worst
 case and it should use space proportional to n plus the number of line
-segments returned
+segments returned. For simplicity, `BruteCollinearPoints` handles only input
+with no more than 4 collinear points.
 - Running time of `FastCollinearPoints` should be n<sup>2</sup>log n in the
 worst case and it should use space proportional to n plus the number of line
 segments returned
