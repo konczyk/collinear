@@ -9,14 +9,13 @@ public class LineSegment {
     private final Point q;
 
     public LineSegment(Point p, Point q) {
-        if (p == null || q == null) {
-            throw new NullPointerException("argument is null");
+        if (p == null) {
+            throw new NullPointerException("first point is null");
+        } else if (q == null) {
+            throw new NullPointerException("second point is null");
         }
         this.p = p;
         this.q = q;
-    }
-
-    public void draw() {
     }
 
     public String toString() {

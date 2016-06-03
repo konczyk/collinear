@@ -3,25 +3,36 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsArrayContainingInOrder.arrayContaining;
 import static org.junit.Assert.assertThat;
 
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.rules.ExpectedException;
 
-@RunWith(JUnit4.class)
 public class BruteCollinearPointsTest {
 
-    @Test(expected = NullPointerException.class)
-    public void throwsExceptionWhenConstructorArgumentIsNull() {
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
+    @Test
+    public void constructWithNullThrowsException() {
+        thrown.expect(NullPointerException.class);
+        thrown.expectMessage("points are null");
+
         new BruteCollinearPoints(null);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void throwsExceptionWhenConstructorArgumentContainsNull() {
+    @Test
+    public void constructWithArrayWithNullsThrowsException() {
+        thrown.expect(NullPointerException.class);
+        thrown.expectMessage("points contain null");
+
         new BruteCollinearPoints(new Point[]{new Point(1, 1), null});
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void throwsExceptionWhenConstructorArgumentContainsDuplicate() {
+    @Test
+    public void constructWithDuplicatesThrowsException() {
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("points contain duplicates");
+
         new BruteCollinearPoints(new Point[]{new Point(1, 1), new Point(1, 1)});
     }
 
@@ -46,6 +57,7 @@ public class BruteCollinearPointsTest {
         BruteCollinearPoints bcp = new BruteCollinearPoints(points);
 
         LineSegment ls = new LineSegment(new Point(1, 1), new Point(5, 5));
+
         assertThat(bcp.segments(), is(arrayContaining(ls)));
         assertThat(bcp.numberOfSegments(), is(equalTo(1)));
     }
@@ -61,6 +73,7 @@ public class BruteCollinearPointsTest {
 
         LineSegment l1 = new LineSegment(new Point(3, 1), new Point(3, 6));
         LineSegment l2 = new LineSegment(new Point(1, 3), new Point(8, 3));
+
         assertThat(bcp.segments(), is(arrayContaining(l1, l2)));
         assertThat(bcp.numberOfSegments(), is(equalTo(2)));
     }

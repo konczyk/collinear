@@ -14,47 +14,41 @@ public class Point implements Comparable<Point> {
         this.y = y;
     }
 
-    public void draw() {
-    }
-
-    public void drawTo(Point that) {
-    }
-
     public String toString() {
         return "(" + x + ", " + y + ")";
     }
 
     @Override
-    public int compareTo(Point that) {
-        if (that == null) {
-            throw new NullPointerException("argument null");
+    public int compareTo(Point other) {
+        if (other == null) {
+            throw new NullPointerException("other point is null");
         }
 
-        int xCompare = Double.compare(this.x, that.x);
-        int yCompare = Double.compare(this.y, that.y);
+        int xCompare = Double.compare(x, other.x);
+        int yCompare = Double.compare(y, other.y);
 
         if (xCompare == 0 && yCompare == 0) {
             return 0;
-        } else if (yCompare == -1 || (yCompare == 0 && xCompare == -1)) {
+        } else if (yCompare < 0 || (yCompare == 0 && xCompare < 0)) {
             return -1;
         } else {
             return 1;
         }
     }
 
-    public double slopeTo(Point that) {
-        if (that == null) {
-            throw new NullPointerException("argument is null");
+    public double slopeTo(Point other) {
+        if (other == null) {
+            throw new NullPointerException("other point is null");
         }
 
-        if (this.compareTo(that) == 0) {
+        if (compareTo(other) == 0) {
             return Double.NEGATIVE_INFINITY;
-        } else if (this.x == that.x) {
+        } else if (x == other.x) {
             return Double.POSITIVE_INFINITY;
-        } else if (this.y == that.y) {
+        } else if (y == other.y) {
             return +0.0;
         } else {
-            return (double) (that.y - this.y)/(that.x - this.x);
+            return (double) (other.y - y)/(other.x - x);
         }
     }
 
@@ -65,12 +59,14 @@ public class Point implements Comparable<Point> {
     private class PointComparator implements Comparator<Point> {
 
         @Override
-        public int compare(Point p1, Point p2) {
-            if (p1 == null || p2 == null) {
-                throw new NullPointerException("argument is null");
+        public int compare(Point p, Point q) {
+            if (p == null) {
+                throw new NullPointerException("first point is null");
+            } else if (q == null) {
+                throw new NullPointerException("second point is null");
             }
 
-            int slopeCompare = Double.compare(slopeTo(p1), slopeTo(p2));
+            int slopeCompare = Double.compare(slopeTo(p), slopeTo(q));
             if (slopeCompare == 1) {
                 return 1;
             } else if (slopeCompare == -1) {

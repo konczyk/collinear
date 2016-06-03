@@ -4,8 +4,8 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Examine four points at a time and check if the all lie
- * on the same line segment.
+ * Examine four points at a time and check if they all lie
+ * on the same line segment
  */
 public class BruteCollinearPoints {
 
@@ -13,16 +13,16 @@ public class BruteCollinearPoints {
 
     public BruteCollinearPoints(Point[] points) {
         if (points == null) {
-            throw new NullPointerException("argument is null");
+            throw new NullPointerException("points are null");
         } else if (containsNull(points)) {
-            throw new NullPointerException("argument contains null");
+            throw new NullPointerException("points contain null");
         }
 
         Point[] sortedPoints = points.clone();
         Arrays.sort(sortedPoints);
 
         if (containsDuplicate(sortedPoints)) {
-            throw new IllegalArgumentException("argument contains duplicates");
+            throw new IllegalArgumentException("points contain duplicates");
         }
 
         findLineSegments(sortedPoints);

@@ -4,8 +4,8 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Examine four or more points at a time and check if the all lie
- * on the same line segment using sorting-based solution.
+ * Examine four or more points at a time and check if they all lie
+ * on the same line segment using sort-based solution
  */
 public class FastCollinearPoints {
 
@@ -13,16 +13,16 @@ public class FastCollinearPoints {
 
     public FastCollinearPoints(Point[] points) {
         if (points == null) {
-            throw new NullPointerException("argument is null");
+            throw new NullPointerException("points are null");
         } else if (containsNull(points)) {
-            throw new NullPointerException("argument contains null");
+            throw new NullPointerException("points contain nulls");
         }
 
         Point[] sortedPoints = points.clone();
         Arrays.sort(sortedPoints);
 
         if (containsDuplicate(sortedPoints)) {
-            throw new IllegalArgumentException("argument contains duplicates");
+            throw new IllegalArgumentException("points contain duplicates");
         }
 
         findLineSegments(sortedPoints);
@@ -63,7 +63,7 @@ public class FastCollinearPoints {
                         && slopeOrder.compare(points[j-1], points[j]) == 0) {
                     j++;
                 }
-                // add segments >= 4 points, but avoid duplicates
+                // add segments with >= 4 points, but avoid duplicates
                 if (j-start >= 3 && points[0].compareTo(points[start]) < 0) {
                     lineSegments.add(new LineSegment(points[0], points[j-1]));
                 }
