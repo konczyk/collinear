@@ -50,9 +50,9 @@ public class FastCollinearPoints {
 
     private void findLineSegments(Point[] points) {
 
-        for (Point point: points) {
+        for (int i = 0; i < points.length && !interrupted(); i++) {
 
-            Comparator<Point> slopeOrder = point.slopeOrder();
+            Comparator<Point> slopeOrder = points[i].slopeOrder();
             Arrays.sort(points, slopeOrder);
 
             int j = 2;
@@ -72,6 +72,10 @@ public class FastCollinearPoints {
 
             Arrays.sort(points);
         }
+    }
+
+    private boolean interrupted() {
+        return Thread.currentThread().isInterrupted();
     }
 
     public int numberOfSegments() {

@@ -18,6 +18,14 @@ public class LineSegment {
         this.q = q;
     }
 
+    public Point start() {
+        return p;
+    }
+
+    public Point end() {
+        return q;
+    }
+
     public String toString() {
         return p + " -> " + q;
     }

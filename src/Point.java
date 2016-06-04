@@ -14,6 +14,14 @@ public class Point implements Comparable<Point> {
         this.y = y;
     }
 
+    public int x() {
+        return x;
+    }
+
+    public int y() {
+        return y;
+    }
+
     public String toString() {
         return "(" + x + ", " + y + ")";
     }

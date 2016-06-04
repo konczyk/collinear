@@ -48,16 +48,21 @@ public class BruteCollinearPoints {
         return false;
     }
 
+    private boolean interrupted() {
+        return Thread.currentThread().isInterrupted();
+    }
+
     private void findLineSegments(Point[] points) {
-        for (int i = 0; i < points.length; i++) {
+        int len = points.length;
+        for (int i = 0; i < len && !interrupted(); i++) {
             Point p0 = points[i];
             Comparator<Point> slopeOrder = p0.slopeOrder();
-            for (int j = i + 1; j < points.length; j++) {
+            for (int j = i + 1; j < len && !interrupted(); j++) {
                 Point p1 = points[j];
-                for (int k = j + 1; k < points.length; k++) {
+                for (int k = j + 1; k < len && !interrupted(); k++) {
                     Point p2 = points[k];
                     if (slopeOrder.compare(p1, p2) == 0) {
-                        for (int l = k + 1; l < points.length; l++) {
+                        for (int l = k + 1; l < len && !interrupted(); l++) {
                             Point p3 = points[l];
                             if (slopeOrder.compare(p2, p3) == 0) {
                                 lineSegments.add(new LineSegment(p0, p3));
