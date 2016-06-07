@@ -16,7 +16,7 @@ public class LineSegmentTest {
 
     @Test
     @Parameters(method = "lineSegmentNullParams")
-    public void throwsExceptionOnCreationWithNulls(Point p, Point q, String msg) {
+    public void constructWithNullThrowsException(Point p, Point q, String msg) {
         thrown.expect(NullPointerException.class);
         thrown.expectMessage(msg);
 
