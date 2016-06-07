@@ -26,6 +26,7 @@ public class Visualizer extends JFrame {
     private static final int COLLINEAR_TIMEOUT = 60;
     private static final String TITLE = "collinear";
     private static final String SEARCH_INFO = "Searching for collinear points...";
+    private static final String FOUND_INFO = "Found %d line segments";
     private static final String CANCEL_INFO = "Searching cancelled after "
                                                 + "%ds timeout expired";
 
@@ -34,8 +35,7 @@ public class Visualizer extends JFrame {
     private final Plane plane;
     private final JLabel statusLabel = new JLabel();
 
-    private LineSegment[] segments;
-    private String resultFormat;
+    private LineSegment[] segments = null;
 
     public Visualizer(Point[] points, boolean brute) {
         this.points = points;
@@ -44,8 +44,12 @@ public class Visualizer extends JFrame {
         setTitle(TITLE);
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JPanel container = new JPanel(new BorderLayout());
+        container.setBorder(BorderFactory.createLineBorder(Color.WHITE, 10));
         plane = new Plane();
-        add(plane, BorderLayout.CENTER);
+        container.add(plane);
+        add(container, BorderLayout.CENTER);
         add(makeStatus(), BorderLayout.SOUTH);
 
         addWindowListener(new WindowAdapter() {
@@ -59,12 +63,13 @@ public class Visualizer extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
 
+        plane.startTimer();
         new TimedCollinearTask().execute();
     }
 
     private JPanel makeStatus() {
         JPanel statusPanel = new JPanel();
-        statusPanel.setBorder(new EmptyBorder(5, 10, 10, 10));
+        statusPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
         statusLabel.setText(SEARCH_INFO);
         statusPanel.add(statusLabel);
@@ -113,37 +118,24 @@ public class Visualizer extends JFrame {
 
     private void draw(final LineSegment[] ls) {
         segments = ls;
-
-        int pointsWidth = Integer.toString(points.length).length();
-        String pf = "%0" + pointsWidth + "d/" + points.length;
-
-        int segmentsWidth = Integer.toString(segments.length).length();
-        String sf = "%0" + segmentsWidth + "d/" + segments.length;
-
-        String pad = new String(new char[15]).replace("\0", " ");
-        resultFormat = "Points: " + pf + pad + "Lines: " + sf;
-
-        updateStatus(0, 0);
-        plane.startTimer();
-    }
-
-    private void updateStatus(int drawnPoints, int drawnSegments) {
-        statusLabel.setText(
-            String.format(resultFormat, drawnPoints, drawnSegments));
+        statusLabel.setText(String.format(FOUND_INFO, segments.length));
+        plane.stopTimer();
+        plane.repaint();
+        for (LineSegment segment: segments) {
+            System.out.println(segment);
+        }
     }
 
     private class Plane extends JPanel implements ActionListener {
-        private static final int DELAY = 10;
+        private static final int DELAY = 3;
         private static final int DIM = 600;
 
         private int drawnPoints = 0;
-        private int drawnSegments = 0;
         private Timer timer;
 
         public Plane() {
-            setPreferredSize(new Dimension(DIM+10, DIM+10));
+            setPreferredSize(new Dimension(DIM, DIM));
             setBackground(Color.WHITE);
-            setBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.WHITE));
         }
 
         public void startTimer() {
@@ -160,25 +152,22 @@ public class Visualizer extends JFrame {
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
-            if (timer == null) {
-                return;
+            if (timer != null) {
+                if (segments != null) {
+                    drawSegments(g);
+                    drawPoints(g, points.length);
+                } else if (drawnPoints < points.length) {
+                    drawPoints(g, drawnPoints++);
+                }
             }
-            if (drawnPoints < points.length) {
-                drawnPoints++;
-            } else if (drawnSegments < segments.length) {
-                drawnSegments++;
-            }
-            drawPoints(g);
-            drawSegments(g);
-            updateStatus(drawnPoints, drawnSegments);
         }
 
-        private void drawPoints(Graphics g) {
+        private void drawPoints(Graphics g, int pointsLimit) {
             Graphics2D g2d = (Graphics2D) g;
             g2d.setPaint(Color.BLACK);
 
             Point p;
-            for (int i = 0; i < drawnPoints; i++) {
+            for (int i = 0; i < pointsLimit; i++) {
                 p = points[i];
                 double x = scale(p.x());
                 double y = scale(Patterns.COMPONENT_MAX - p.y());
@@ -190,9 +179,7 @@ public class Visualizer extends JFrame {
             Graphics2D g2d = (Graphics2D) g;
             g2d.setPaint(Color.BLUE);
 
-            LineSegment ls;
-            for (int i = 0; i < drawnSegments; i++) {
-                ls = segments[i];
+            for (LineSegment ls: segments) {
                 double x0 = scale(ls.start().x());
                 double y0 = scale(Patterns.COMPONENT_MAX - ls.start().y());
                 double x1 = scale(ls.end().x());
@@ -202,18 +189,16 @@ public class Visualizer extends JFrame {
         }
 
         private double scale(double p) {
-            return p / Patterns.COMPONENT_MAX * DIM;
+            return p / Patterns.COMPONENT_MAX * (DIM - 1);
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (drawnPoints < points.length || drawnSegments < segments.length) {
+            if (drawnPoints < points.length) {
                 repaint();
             } else {
                 stopTimer();
             }
         }
-
     }
-
 }
