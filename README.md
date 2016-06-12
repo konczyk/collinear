@@ -62,7 +62,7 @@ generated unique points on a 32768x32768 plane and the default fast algorithm:
 Visualize line segments with 4 or more collinear points using data of 6000
 randomly generated unique points on a 32768x32768 plane (scaled down to 600x600
 for display) and the default fast algorithm
-([see sample animation](data/visualizer.gif?raw=true)):
+([sample animation](data/visualizer.gif?raw=true)):
 
     $ java -cp build/libs/collinear.jar Patterns -n 6000 -g
 
