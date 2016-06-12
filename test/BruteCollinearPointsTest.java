@@ -1,6 +1,6 @@
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.arrayContaining;
+import static org.hamcrest.Matchers.emptyArray;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.collection.IsArrayContainingInOrder.arrayContaining;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Rule;
@@ -44,8 +44,8 @@ public class BruteCollinearPointsTest {
         };
         BruteCollinearPoints bcp = new BruteCollinearPoints(points);
 
-        assertThat(bcp.segments(), is(equalTo(new LineSegment[0])));
-        assertThat(bcp.numberOfSegments(), is(equalTo(0)));
+        assertThat(bcp.segments(), is(emptyArray()));
+        assertThat(bcp.numberOfSegments(), is(0));
     }
 
     @Test
@@ -59,7 +59,7 @@ public class BruteCollinearPointsTest {
         LineSegment ls = new LineSegment(new Point(1, 1), new Point(5, 5));
 
         assertThat(bcp.segments(), is(arrayContaining(ls)));
-        assertThat(bcp.numberOfSegments(), is(equalTo(1)));
+        assertThat(bcp.numberOfSegments(), is(1));
     }
 
     @Test
@@ -75,7 +75,7 @@ public class BruteCollinearPointsTest {
         LineSegment l2 = new LineSegment(new Point(1, 3), new Point(8, 3));
 
         assertThat(bcp.segments(), is(arrayContaining(l1, l2)));
-        assertThat(bcp.numberOfSegments(), is(equalTo(2)));
+        assertThat(bcp.numberOfSegments(), is(2));
     }
 
 }

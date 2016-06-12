@@ -1,6 +1,7 @@
+import static org.hamcrest.Matchers.arrayContaining;
+import static org.hamcrest.Matchers.emptyArray;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.collection.IsArrayContainingInOrder.arrayContaining;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Rule;
@@ -44,7 +45,7 @@ public class FastCollinearPointsTest {
         };
         FastCollinearPoints fcp = new FastCollinearPoints(points);
 
-        assertThat(fcp.segments(), is(equalTo(new LineSegment[0])));
+        assertThat(fcp.segments(), is(emptyArray()));
         assertThat(fcp.numberOfSegments(), is(equalTo(0)));
     }
 
