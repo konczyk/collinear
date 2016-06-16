@@ -25,7 +25,7 @@ has 5 or more collinear points.
 
 ## Sample client
 
-Build project:
+Build a jar file:
 
     $ ./gradlew assemble
 
